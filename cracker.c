@@ -10,7 +10,7 @@
 int repeat_filter(char*  passwd, int repeats);
 int base_count_filter(char* passwd, int count);
 void i2a(uint64_t number, char *passwd);
-void _reverse(char *str);
+void _reverse(char *passwd);
 
 int main(int argc, char **argv)
 {
@@ -18,12 +18,15 @@ int main(int argc, char **argv)
     char passwd_buffer[BUFFER_SIZE];
     char passwd[PASSWD_SIZE];
     int i = 0;
+    uint64_t test = 0xDEAD1337;
 
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
 
-    i2a(0xDEAD1337, passwd);
+    printf("%d\n", test);
+    i2a(test, passwd);
     printf("%s\n", passwd);
+
 
     number = START;
 /*
@@ -65,11 +68,24 @@ void i2a(uint64_t number, char *passwd)
         number /= 16;
     } while ( number  > 0);
 
-    //_reverse(passwd);
+    _reverse(passwd);
 }
 
-void _reverse(char *str)
+void _reverse(char *passwd)
 {
+    int i = 0;
+    int j = PASSWD_SIZE - 2; // last char in array, not \0
+    char temp;
+
+    for (;;i++, j--)
+    {
+        if (i >= j) return;
+        temp = passwd[i];
+        passwd[i] = passwd[j];
+        passwd[j] = temp;
+
+    }
+
 }
 
 int repeat_filter(char*  passwd, int repeats)
