@@ -19,11 +19,16 @@ int main(int argc, char **argv)
     char passwd[PASSWD_SIZE];
     int i = 0;
 
-    memset(passwd, PASSWD_SIZE - 1, '0');
+    memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
 
-    number = START;
 
+    printf("%s\n", passwd);
+    i2a(123456790123456, passwd);
+    printf("%s\n", passwd);
+
+    number = START;
+/*
     for (; number <= STOP; ++number)
     {
         i2a(number, passwd);
@@ -39,7 +44,7 @@ int main(int argc, char **argv)
             }
         }
     }
-
+*/
     // write buffer to disk
 
     return 0;
@@ -48,8 +53,14 @@ int main(int argc, char **argv)
 void i2a(uint64_t number, char *passwd)
 {
     int i = 0;
-    k
 
+    do
+    {
+        passwd[i++] = number % 10 + '0';
+        number /= 10;
+    } while ( number  > 0);
+
+    //_reverse(passwd);
 }
 
 void _reverse(char *str)
