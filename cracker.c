@@ -8,7 +8,7 @@
 #define BUFFER_SIZE 17*1024
 
 int repeat_filter(char*  passwd, int repeats);
-int base_count_filter(char* passwd, int count);
+int digit_count_filter(char* passwd, int count);
 void i2a(uint64_t number, char *passwd);
 void _reverse(char *passwd);
 
@@ -23,19 +23,15 @@ int main(int argc, char **argv)
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
 
-    printf("%d\n", test);
-    i2a(test, passwd);
-    printf("%s\n", passwd);
-
-
     number = START;
-/*
     for (; number <= STOP; ++number)
     {
         i2a(number, passwd);
-        if (repeat_filter(passwd, 3) && base_count_filter(passwd, 12))
+
+        if (repeat_filter(passwd, 3) && digit_count_filter(passwd, 12))
         {
-            printf("%x\n", number);
+            printf("%s\n", passwd);
+            /*
             memcpy(&passwd_buffer[i++ * PASSWD_SIZE], &passwd, PASSWD_SIZE);
 
             if (i > 1024)
@@ -43,9 +39,9 @@ int main(int argc, char **argv)
                 i = 0;
                 //write buffer to disk
             }
+            */
         }
     }
-*/
     // write buffer to disk
 
     return 0;
@@ -83,17 +79,28 @@ void _reverse(char *passwd)
         temp = passwd[i];
         passwd[i] = passwd[j];
         passwd[j] = temp;
-
     }
-
 }
 
 int repeat_filter(char*  passwd, int repeats)
 {
-    return 0;
+    int rep_count = 0;
+    int i = 0;
+
+    for (; i < PASSWD_SIZE - 2; i++)
+    {
+        if (passwd[i] == passwd[i + 1])  
+            rep_count++;
+        else
+            rep_count = 0;
+
+        if (rep_count >= repeats) return 0;
+    }
+    
+    return 1;
 }
 
-int base_count_filter(char* passwd, int count)
+int digit_count_filter(char* passwd, int count)
 {
-    return 0;
+    return 1;
 }
