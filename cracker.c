@@ -22,9 +22,7 @@ int main(int argc, char **argv)
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
 
-
-    printf("%s\n", passwd);
-    i2a(123456790123456, passwd);
+    i2a(0xDEAD1337, passwd);
     printf("%s\n", passwd);
 
     number = START;
@@ -53,11 +51,18 @@ int main(int argc, char **argv)
 void i2a(uint64_t number, char *passwd)
 {
     int i = 0;
+    int temp = 0;
 
     do
     {
-        passwd[i++] = number % 10 + '0';
-        number /= 10;
+        temp = number % 16;
+        
+        if (temp > 9)
+            passwd[i++] = temp - 10 + 'A';
+        else
+            passwd[i++] = temp + '0';
+
+        number /= 16;
     } while ( number  > 0);
 
     //_reverse(passwd);
