@@ -3,13 +3,14 @@
 #include <string.h>
 
 #define START 0x0000000000000000L
-#define STOP  0x000FFFFFFFFFFFFFL
+#define STOP  0xFFFFFFFFFFFFFFFFL
 #define PASSWD_SIZE 17
 #define BUFFER_SIZE 17*1024
 
 int repeat_filter(char*  passwd, int repeats);
 int digit_count_filter(char* passwd, int count);
 void i2a(uint64_t number, char *passwd);
+int a2i(char letter);
 void _reverse(char *passwd);
 
 int main(int argc, char **argv)
@@ -102,5 +103,21 @@ int repeat_filter(char*  passwd, int repeats)
 
 int digit_count_filter(char* passwd, int count)
 {
-    return 1;
+    int i = 0;
+    int sum = 0;
+    int result = 0;
+    int check_list[16] = {0};
+
+    for (; i < PASSWD_SIZE - 2; i++)
+    {
+        check_list[a2i(passwd[i])] = 1;
+    }
+
+    for (i = 0; i < 16; i++)
+        sum += check_list[i];
+
+    if (sum >= count)
+        result 1;
+
+    return result;
 }
