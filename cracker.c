@@ -22,10 +22,9 @@ int main(int argc, char **argv)
     int i = 0;
     int digits = 6;
 
-    if (argc >= 1)
+    if (argc >= 2)
         digits = atoi(argv[1]);
     
-
 
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
@@ -35,9 +34,10 @@ int main(int argc, char **argv)
     {
         i2a(number, passwd);
 
-        if (repeat_filter(passwd, 3) && digit_count_filter(passwd, digits))
+        if (digit_count_filter(passwd, digits))
         {
-            printf("%s\n", passwd);
+            //if( repeat_filter(passwd, 3))
+                printf("%s\n", passwd);
             /*
             memcpy(&passwd_buffer[i++ * PASSWD_SIZE], &passwd, PASSWD_SIZE);
 
@@ -48,6 +48,7 @@ int main(int argc, char **argv)
             }
             */
         }
+        memset(passwd, '0', PASSWD_SIZE - 1);
     }
     // write buffer to disk
 
