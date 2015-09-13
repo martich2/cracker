@@ -3,13 +3,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define START 0x0000000000000000L
+#define START 0x0123456789ABCDEFL
 #define STOP  0xFFFFFFFFFFFFFFFFL
 #define PASSWD_SIZE 17
-#define BUFFER_SIZE 17*1024
 
 int repeat_filter(char*  passwd, int repeats);
 int digit_count_filter(char* passwd, int count);
+int incremental_filter(char* passwd, int count);
+
 void i2a(uint64_t number, char *passwd);
 int a2i(char letter);
 void _reverse(char *passwd);
@@ -17,40 +18,29 @@ void _reverse(char *passwd);
 int main(int argc, char **argv)
 {
     uint64_t number = START;
-    char passwd_buffer[BUFFER_SIZE];
     char passwd[PASSWD_SIZE];
     int i = 0;
     int digits = 6;
 
     if (argc >= 2)
         digits = atoi(argv[1]);
-    
 
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
 
-    number = START;
     for (; number <= STOP; ++number)
     {
         i2a(number, passwd);
-
-        if (digit_count_filter(passwd, digits))
+                
+        if( repeat_filter(passwd, 3))
         {
-            //if( repeat_filter(passwd, 3))
-                printf("%s\n", passwd);
-            /*
-            memcpy(&passwd_buffer[i++ * PASSWD_SIZE], &passwd, PASSWD_SIZE);
-
-            if (i > 1024)
+            if (digit_count_filter(passwd, digits))
             {
-                i = 0;
-                //write buffer to disk
+                printf("%s\n", passwd);
             }
-            */
         }
         memset(passwd, '0', PASSWD_SIZE - 1);
     }
-    // write buffer to disk
 
     return 0;
 }
@@ -63,7 +53,7 @@ void i2a(uint64_t number, char *passwd)
     do
     {
         temp = number % 16;
-        
+
         if (temp > 9)
             passwd[i++] = temp - 10 + 'A';
         else
@@ -104,7 +94,7 @@ int repeat_filter(char*  passwd, int repeats)
 
         if (rep_count >= repeats) return 0;
     }
-    
+
     return 1;
 }
 
@@ -129,10 +119,27 @@ int digit_count_filter(char* passwd, int count)
     return result;
 }
 
+int incremental_filter(char* passwd, int count)
+{
+    int i = 0;
+    int sum = 0;
+    int result = 1;
+    
+    for(; i < PASSWD_SIZE - 3; i++)
+    {
+        if (a2i(passwd[i]) + 1 == a2i(passwd[i + 1]))
+            sum++;
+    }
+    
+    if (sum >= count) result = 0;
+
+    return result;
+}
+
 int a2i(char letter)
 {
     int result;
-    
+
     if ((letter >= '0') && (letter <= '9' ))
         result = (int)letter - '0';
 
