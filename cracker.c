@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define START 0x0000000000000000L
 #define STOP  0xFFFFFFFFFFFFFFFFL
@@ -19,7 +20,12 @@ int main(int argc, char **argv)
     char passwd_buffer[BUFFER_SIZE];
     char passwd[PASSWD_SIZE];
     int i = 0;
-    uint64_t test = 0xDEAD1337;
+    int digits = 6;
+
+    if (argc >= 1)
+        digits = atoi(argv[1]);
+    
+
 
     memset(passwd, '0', PASSWD_SIZE - 1);
     passwd[PASSWD_SIZE - 1] = '\0';
@@ -29,7 +35,7 @@ int main(int argc, char **argv)
     {
         i2a(number, passwd);
 
-        if (repeat_filter(passwd, 3) && digit_count_filter(passwd, 12))
+        if (repeat_filter(passwd, 3) && digit_count_filter(passwd, digits))
         {
             printf("%s\n", passwd);
             /*
@@ -117,7 +123,20 @@ int digit_count_filter(char* passwd, int count)
         sum += check_list[i];
 
     if (sum >= count)
-        result 1;
+        result = 1;
+
+    return result;
+}
+
+int a2i(char letter)
+{
+    int result;
+    
+    if ((letter >= '0') && (letter <= '9' ))
+        result = (int)letter - '0';
+
+    if ((letter >= 'A') && (letter <= 'F'))
+        result = (int)letter - 'A' + 10;
 
     return result;
 }
