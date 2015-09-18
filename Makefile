@@ -1,18 +1,20 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -pedantic -pedantic-errors
-LDFLAGS =
 
-TARGET = cracker
+TARGET = main
 SOURCE = ${TARGET}.c
-INCLUDE =
+INCLUDE = cracker.o
 
 default: compile
 
-compile: ${SOURCE} ${INCLUDE}
-	${CC} ${CFLAGS} ${SOURCE} -o ${TARGET}
+compile: ${INCLUDE} ${SOURCE} 
+	${CC} ${CFLAGS} ${SOURCE} cracker.o -o ${TARGET}
+
+cracker.o: cracker.c cracker.h
+	gcc -c -o cracker.o cracker.c $(CflAGS)
 
 debug: ${SOURCE} ${INCLUDE}
 	${CC} ${CFLAGS} ${SOURCE} -g -D DEBUG -o ${TARGET}
 
 clean:
-	rm ${TARGET}.o ${TARGET}
+	rm *.o ${TARGET}
