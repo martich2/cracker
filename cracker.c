@@ -106,3 +106,9 @@ int a2i(char letter)
 
     return result;
 }
+
+void progress(uint64_t number, uint64_t tick)
+{
+    if (number % tick == 0)
+        printf("passwd: %lx, %f%\n", number, 100.0*((float)number)/STOP);
+}

@@ -1,14 +1,12 @@
-#include <stdio.h>
-#include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
 #include "cracker.h"
 
 int main(int argc, char **argv)
 {
-    uint64_t number = START2;
+    uint64_t number = START;
     char passwd[PASSWD_SIZE];
-    int digits = 6;
+    int digits = 8;
 
     if (argc >= 2)
         digits = atoi(argv[1]);
@@ -19,11 +17,9 @@ int main(int argc, char **argv)
     for (; number <= STOP; ++number)
     {
         i2a(number, passwd);
-        if (number % 0x10000L == 0) printf("%u%\n", number/STOP);
-
-        if(incremental_filter(passwd, 2))
+        if (incremental_filter(passwd, 2))
         {
-            if( repeat_filter(passwd, 2))
+            if (repeat_filter(passwd, 3))
             {
                 if (min_digit_count_filter(passwd, digits))
                 {
